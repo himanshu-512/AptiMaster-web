@@ -22,6 +22,13 @@ export default function VerifyPage() {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([])
 
   useEffect(() => {
+    if (!auth.loading && auth.token) {
+      router.replace('/dashboard')
+      return
+    }
+
+    if (auth.loading) return
+
     // Get phone number from session storage
     const phone = sessionStorage.getItem('aptimaster_phone')
     if (!phone) {
@@ -32,7 +39,7 @@ export default function VerifyPage() {
     
     // Focus first input
     inputRefs.current[0]?.focus()
-  }, [router])
+  }, [auth.loading, auth.token, router])
 
   useEffect(() => {
     // Resend timer countdown
@@ -119,6 +126,14 @@ export default function VerifyPage() {
   }
 
   const maskedPhone = phoneNumber ? `${phoneNumber.slice(0, 3)} ${phoneNumber.slice(3, 5)}****${phoneNumber.slice(-2)}` : ''
+
+  if (auth.loading || auth.token) {
+    return (
+      <div className="min-h-screen grid place-items-center bg-background">
+        <div className="h-10 w-10 rounded-full border-2 border-primary/30 border-t-primary animate-spin" />
+      </div>
+    )
+  }
 
   return (
     <>

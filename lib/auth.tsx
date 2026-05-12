@@ -51,7 +51,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setSession(newToken, userId, profileComplete)
     setTokenValue(newToken)
     await refresh()
-    router.replace(profileComplete ? '/dashboard' : '/profile')
+    router.replace('/dashboard')
   }
 
   const logout = () => {
@@ -77,7 +77,7 @@ export function useRequireAuth() {
   const router = useRouter()
 
   useEffect(() => {
-    if (!auth.loading && !auth.token) router.replace('/auth/login')
+    if (!auth.loading && !auth.token) router.replace('/')
   }, [auth.loading, auth.token, router])
 
   return auth

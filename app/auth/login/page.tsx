@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -9,13 +9,29 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { authApi, getApiMessage } from '@/lib/api'
+import { useAuth } from '@/lib/auth'
 import { toast } from 'sonner'
 
 export default function LoginPage() {
   const router = useRouter()
+  const auth = useAuth()
   const [phoneNumber, setPhoneNumber] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    if (!auth.loading && auth.token) {
+      router.replace('/dashboard')
+    }
+  }, [auth.loading, auth.token, router])
+
+  if (auth.loading || auth.token) {
+    return (
+      <div className="min-h-screen grid place-items-center bg-background">
+        <div className="h-10 w-10 rounded-full border-2 border-primary/30 border-t-primary animate-spin" />
+      </div>
+    )
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
