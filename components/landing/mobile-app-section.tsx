@@ -48,7 +48,7 @@ export function MobileAppSection() {
                   size="lg"
                   className="h-14 px-8 text-base font-semibold rounded-2xl bg-foreground text-background hover:bg-foreground/90"
                 >
-                  <a href="/downloads/aptimaster.apk" download>
+                  <a href="https://drive.google.com/uc?export=download&id=1AFcd6SjilzVb-b1XzIIMS25t6XUoC315">
                     <Download className="mr-2 w-5 h-5" />
                     Download for Android
                   </a>

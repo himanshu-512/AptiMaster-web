@@ -42,7 +42,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="font-vars" suppressHydrationWarning>
-      <body className="font-sans antialiased bg-background min-h-screen">
+      <body
+        className="font-sans antialiased bg-background min-h-screen"
+        suppressHydrationWarning
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
