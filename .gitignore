@@ -9,6 +9,9 @@ __v0_jsx-dev-runtime.ts
 # Environment variables
 .env*.local
 
+# Large release artifacts are hosted outside the repo
+public/downloads/*.apk
+
 # Common ignores
 node_modules
 .next/

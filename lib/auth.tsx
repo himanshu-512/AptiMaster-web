@@ -47,6 +47,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     refresh()
   }, [])
 
+  useEffect(() => {
+    const handleUnauthorized = () => {
+      setTokenValue(null)
+      setUser(null)
+      setLoading(false)
+      router.replace('/')
+    }
+
+    window.addEventListener('aptimaster:unauthorized', handleUnauthorized)
+    return () => window.removeEventListener('aptimaster:unauthorized', handleUnauthorized)
+  }, [router])
+
   const login = async (newToken: string, userId: string, profileComplete: boolean) => {
     setSession(newToken, userId, profileComplete)
     setTokenValue(newToken)

@@ -24,6 +24,8 @@ import { Progress } from '@/components/ui/progress'
 import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer } from 'recharts'
 import { analyticsApi, getApiMessage, leaderboardApi, userApi, type AnalyticsResponse, type AiSuggestion, type Profile } from '@/lib/api'
 import { toast } from 'sonner'
+import { DashboardSkeleton } from '@/components/app/dashboard-skeleton'
+import { ProfileCompletionBanner } from '@/components/app/profile-completion-banner'
 
 const practiceShortcuts = [
   { label: 'Topic Practice', desc: 'Practice by topic', icon: Target, href: '/practice?type=topic', color: 'from-primary to-primary/80' },
@@ -91,11 +93,7 @@ export default function DashboardPage() {
   }, [analytics])
 
   if (loading) {
-    return (
-      <div className="min-h-[70vh] grid place-items-center">
-        <div className="h-10 w-10 rounded-full border-2 border-primary/30 border-t-primary animate-spin" />
-      </div>
-    )
+    return <DashboardSkeleton />
   }
 
   const stats = [
@@ -107,6 +105,8 @@ export default function DashboardPage() {
 
   return (
     <div className="p-4 lg:p-6 space-y-6">
+      <ProfileCompletionBanner profile={profile} />
+
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
           <h1 className="font-[family-name:var(--font-sora)] text-2xl lg:text-3xl font-bold">

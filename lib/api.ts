@@ -1,6 +1,9 @@
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL || 'https://aptimaster-1.onrender.com/api'
 
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://aptimaster.onrender.com'
+
 export type ApiError = Error & { status?: number; data?: unknown }
 
 function getToken() {
@@ -9,6 +12,7 @@ function getToken() {
 }
 
 export function setSession(token: string, userId?: string, profileComplete?: boolean) {
+  if (typeof window === 'undefined') return
   localStorage.setItem('aptimaster_token', token)
   if (userId) localStorage.setItem('aptimaster_user_id', userId)
   if (typeof profileComplete === 'boolean') {
@@ -17,10 +21,17 @@ export function setSession(token: string, userId?: string, profileComplete?: boo
 }
 
 export function clearSession() {
+  if (typeof window === 'undefined') return
   localStorage.removeItem('aptimaster_token')
   localStorage.removeItem('aptimaster_user_id')
   localStorage.removeItem('aptimaster_profile_complete')
   sessionStorage.removeItem('aptimaster_phone')
+}
+
+function handleUnauthorized() {
+  if (typeof window === 'undefined') return
+  clearSession()
+  window.dispatchEvent(new Event('aptimaster:unauthorized'))
 }
 
 export async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
@@ -52,6 +63,9 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}): Prom
     const error = new Error(message) as ApiError
     error.status = response.status
     error.data = data
+    if (response.status === 401 || response.status === 403) {
+      handleUnauthorized()
+    }
     throw error
   }
 
