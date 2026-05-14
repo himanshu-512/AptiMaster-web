@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
-import { Menu, X, Zap } from 'lucide-react'
+import { Download, Menu, X, Zap } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/theme-toggle'
 
@@ -73,6 +73,16 @@ export function Header() {
             >
               <Link href="/auth/login">Get Started</Link>
             </Button>
+            <Button
+              asChild
+              variant="outline"
+              className="rounded-xl"
+            >
+              <Link href="/download">
+                <Download className="mr-2 h-4 w-4" />
+                App
+              </Link>
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -127,6 +137,16 @@ export function Header() {
                   className="rounded-xl w-full bg-primary hover:bg-primary/90"
                 >
                   <Link href="/auth/login">Get Started</Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="rounded-xl w-full"
+                >
+                  <Link href="/download">
+                    <Download className="mr-2 h-4 w-4" />
+                    Download App
+                  </Link>
                 </Button>
               </div>
             </nav>

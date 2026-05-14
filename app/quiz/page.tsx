@@ -158,6 +158,11 @@ function QuizContent() {
     }
   }
 
+  const startReview = () => {
+    setCurrentIndex(0)
+    setShowReview(true)
+  }
+
   const answeredCount = questionStates.filter((s) => s.selected !== null).length
   const correctCount = questionStates.filter((s, i) => s.selected === questions[i]?.correctAnswer).length
   const accuracy = result ? Math.round(result.accuracy) : answeredCount > 0 ? Math.round((correctCount / answeredCount) * 100) : 0
@@ -234,7 +239,7 @@ function QuizContent() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3">
-            <Button onClick={() => setShowReview(true)} variant="outline" className="flex-1 h-12 rounded-2xl">Review Answers</Button>
+            <Button onClick={startReview} variant="outline" className="flex-1 h-12 rounded-2xl">Review Answers</Button>
             <Button onClick={() => router.push('/practice')} className="flex-1 h-12 rounded-2xl">Practice Again</Button>
           </div>
         </motion.div>

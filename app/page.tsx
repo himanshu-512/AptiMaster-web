@@ -10,6 +10,7 @@ import { LeaderboardSection } from '@/components/landing/leaderboard-section'
 import { ContestSection } from '@/components/landing/contest-section'
 import { AIRecommendationSection } from '@/components/landing/ai-recommendation-section'
 import { MobileAppSection } from '@/components/landing/mobile-app-section'
+import { SeoPrepSection } from '@/components/landing/seo-prep-section'
 import { Footer } from '@/components/landing/footer'
 import { useAuth } from '@/lib/auth'
 import { SITE_URL } from '@/lib/api'
@@ -75,6 +76,7 @@ export default function LandingPage() {
       />
       <Header />
       <HeroSection />
+      <SeoPrepSection />
       <section id="features">
         <FeaturesSection />
       </section>

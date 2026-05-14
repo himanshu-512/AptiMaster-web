@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
-import { Camera, Trophy, Target, Flame, BookOpen, TrendingUp, Settings, LogOut, Shield, Zap, Crown } from "lucide-react"
+import { Camera, Trophy, Target, Flame, BookOpen, TrendingUp, Settings, LogOut, Shield, Zap, Crown, CheckCircle2 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -39,6 +39,7 @@ export default function ProfilePage() {
       try {
         const data = await userApi.profile()
         setProfile(data)
+        if (!data.profileComplete) setActiveTab("settings")
         setForm({
           name: data.name || "",
           age: data.age ? String(data.age) : "",
@@ -115,6 +116,29 @@ export default function ProfilePage() {
 
   return (
     <div className="space-y-6 p-4 lg:p-6">
+      {profile && !profile.profileComplete && (
+        <Card className="border-primary/20 bg-primary/10">
+          <CardContent className="p-5">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div className="flex gap-3">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+                  <CheckCircle2 className="h-5 w-5" />
+                </div>
+                <div>
+                  <h2 className="font-semibold">Finish your first-time setup</h2>
+                  <p className="text-sm leading-6 text-muted-foreground">
+                    Add your name, target exam or company, daily goal, and preferred topics. AptiMaster will use this to personalize your dashboard and smart practice.
+                  </p>
+                </div>
+              </div>
+              <Button className="rounded-xl md:shrink-0" onClick={() => setActiveTab("settings")}>
+                Complete setup
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <Card className="relative overflow-hidden border-border bg-card">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-cyan-500/5 to-purple-500/10" />

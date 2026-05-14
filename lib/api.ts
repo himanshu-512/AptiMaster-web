@@ -4,6 +4,9 @@ export const API_BASE_URL =
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || 'https://aptimaster-web.vercel.app'
 
+export const APP_DOWNLOAD_URL =
+  'https://drive.google.com/uc?export=download&id=1AFcd6SjilzVb-b1XzIIMS25t6XUoC315'
+
 export type ApiError = Error & { status?: number; data?: unknown }
 
 function getToken() {

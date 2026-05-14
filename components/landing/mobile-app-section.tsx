@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import { Smartphone, Download, Star, ChevronRight, QrCode } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
@@ -48,10 +49,10 @@ export function MobileAppSection() {
                   size="lg"
                   className="h-14 px-8 text-base font-semibold rounded-2xl bg-foreground text-background hover:bg-foreground/90"
                 >
-                  <a href="https://drive.google.com/uc?export=download&id=1AFcd6SjilzVb-b1XzIIMS25t6XUoC315">
+                  <Link href="/download">
                     <Download className="mr-2 w-5 h-5" />
                     Download for Android
-                  </a>
+                  </Link>
                 </Button>
                 <Button
                   variant="outline"

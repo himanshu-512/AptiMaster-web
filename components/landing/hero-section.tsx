@@ -72,10 +72,10 @@ export function HeroSection() {
                 size="lg"
                 className="h-14 px-8 text-base font-semibold rounded-2xl border-border/50 bg-card/50 hover:bg-card hover:border-primary/50 transition-all duration-300"
               >
-                <a href="https://drive.google.com/uc?export=download&id=1AFcd6SjilzVb-b1XzIIMS25t6XUoC315">
+                <Link href="/download">
                   <Download className="mr-2 w-5 h-5" />
                   Download App
-                </a>
+                </Link>
               </Button>
             </div>
 
