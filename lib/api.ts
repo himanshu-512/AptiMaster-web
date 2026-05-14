@@ -2,7 +2,7 @@ export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL || 'https://aptimaster-1.onrender.com/api'
 
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || 'https://aptimaster.onrender.com'
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://aptimaster-web.vercel.app'
 
 export type ApiError = Error & { status?: number; data?: unknown }
 
