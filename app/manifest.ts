@@ -2,8 +2,8 @@ import type { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'AptiMaster - Aptitude Practice App',
-    short_name: 'AptiMaster',
+    name: 'AptiRush - Aptitude Practice App',
+    short_name: 'AptiRush',
     description: 'AI-powered aptitude practice, mock tests, analytics, contests, and leaderboard preparation.',
     start_url: '/',
     scope: '/',

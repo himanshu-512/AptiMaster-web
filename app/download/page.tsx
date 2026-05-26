@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import { DownloadClient } from '@/components/download-client'
 
 export const metadata: Metadata = {
-  title: 'Download AptiMaster Android App',
-  description: 'Download the AptiMaster Android APK for aptitude practice, smart quizzes, analytics, contests, and placement preparation.',
+  title: 'Download AptiRush Android App',
+  description: 'Download the AptiRush Android APK for aptitude practice, smart quizzes, analytics, contests, and placement preparation.',
   alternates: {
     canonical: '/download',
   },

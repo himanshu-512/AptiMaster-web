@@ -9,7 +9,7 @@ export default function NotFound() {
         <p className="text-sm font-semibold text-primary">404</p>
         <h1 className="mt-2 font-[family-name:var(--font-sora)] text-3xl font-bold">Page not found</h1>
         <p className="mt-3 text-muted-foreground">
-          This page is not available. Go back to AptiMaster and continue your preparation.
+          This page is not available. Go back to AptiRush and continue your preparation.
         </p>
         <Button asChild className="mt-6 rounded-xl">
           <Link href="/">

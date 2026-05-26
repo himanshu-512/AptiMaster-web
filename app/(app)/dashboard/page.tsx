@@ -110,7 +110,7 @@ export default function DashboardPage() {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
           <h1 className="font-[family-name:var(--font-sora)] text-2xl lg:text-3xl font-bold">
-            Welcome back, {profile?.name || 'AptiMaster User'}!
+            Welcome back, {profile?.name || 'AptiRush User'}!
           </h1>
           <p className="text-muted-foreground mt-1">Continue your preparation with live backend progress.</p>
         </div>

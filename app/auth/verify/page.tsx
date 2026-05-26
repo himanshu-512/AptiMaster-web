@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Zap, ChevronLeft, RefreshCw, CheckCircle2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { authApi, getApiMessage } from '@/lib/api'
+import { authApi, getApiMessage, getStoredPhone } from '@/lib/api'
 import { useAuth } from '@/lib/auth'
 import { toast } from 'sonner'
 
@@ -30,7 +30,7 @@ export default function VerifyPage() {
     if (auth.loading) return
 
     // Get phone number from session storage
-    const phone = sessionStorage.getItem('aptimaster_phone')
+    const phone = getStoredPhone()
     if (!phone) {
       router.push('/auth/login')
       return
@@ -157,7 +157,7 @@ export default function VerifyPage() {
               <Zap className="w-6 h-6 text-white" />
             </div>
             <span className="font-[family-name:var(--font-sora)] text-2xl font-bold">
-              AptiMaster
+              AptiRush
             </span>
           </Link>
 
@@ -199,7 +199,7 @@ export default function VerifyPage() {
                 <Zap className="w-5 h-5 text-white" />
               </div>
               <span className="font-[family-name:var(--font-sora)] text-xl font-bold">
-                AptiMaster
+                AptiRush
               </span>
             </Link>
           </div>

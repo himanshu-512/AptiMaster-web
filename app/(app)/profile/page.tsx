@@ -11,7 +11,7 @@ import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { userApi, getApiMessage, type Profile } from "@/lib/api"
+import { userApi, getApiMessage, STORAGE_KEYS, type Profile } from "@/lib/api"
 import { useAuth } from "@/lib/auth"
 import { toast } from "sonner"
 
@@ -88,7 +88,7 @@ export default function ProfilePage() {
         preferredTopics: form.preferredTopics,
       })
       setProfile(updated)
-      localStorage.setItem("aptimaster_profile_complete", String(Boolean(updated.profileComplete)))
+      localStorage.setItem(STORAGE_KEYS.profileComplete, String(Boolean(updated.profileComplete)))
       await auth.refresh()
       toast.success("Profile updated")
     } catch (err) {
@@ -127,7 +127,7 @@ export default function ProfilePage() {
                 <div>
                   <h2 className="font-semibold">Finish your first-time setup</h2>
                   <p className="text-sm leading-6 text-muted-foreground">
-                    Add your name, target exam or company, daily goal, and preferred topics. AptiMaster will use this to personalize your dashboard and smart practice.
+                    Add your name, target exam or company, daily goal, and preferred topics. AptiRush will use this to personalize your dashboard and smart practice.
                   </p>
                 </div>
               </div>
@@ -159,7 +159,7 @@ export default function ProfilePage() {
                   </div>
                 </div>
                 <div className="text-center md:text-left">
-                  <h1 className="text-2xl font-bold text-foreground">{profile?.name || "AptiMaster User"}</h1>
+                  <h1 className="text-2xl font-bold text-foreground">{profile?.name || "AptiRush User"}</h1>
                   <p className="text-muted-foreground">{profile?.examGoal || "Set your preparation goal"}{profile?.target ? ` - ${profile.target}` : ""}</p>
                   <div className="mt-3 flex items-center justify-center gap-2 md:justify-start">
                     <Badge className="bg-primary/20 text-primary">{profile?.profileComplete ? "Profile Complete" : "Setup Pending"}</Badge>

@@ -31,7 +31,7 @@ export function MobileAppSection() {
                 </span>
               </h2>
               <p className="text-lg text-muted-foreground mb-8 text-pretty leading-relaxed">
-                Download the AptiMaster app for the best mobile experience. Practice anywhere, anytime with offline support and push notifications for contests.
+                Download the AptiRush app for the best mobile experience. Practice anywhere, anytime with offline support and push notifications for contests.
               </p>
 
               <div className="flex items-center gap-4 mb-8">

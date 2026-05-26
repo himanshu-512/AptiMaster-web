@@ -1,4 +1,4 @@
-const CACHE_NAME = 'aptimaster-shell-v1'
+const CACHE_NAME = 'aptirush-shell-v1'
 const OFFLINE_URL = '/offline.html'
 
 self.addEventListener('install', (event) => {

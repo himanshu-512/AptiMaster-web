@@ -48,7 +48,7 @@ export function Footer() {
                 <Zap className="w-5 h-5 text-white" />
               </div>
               <span className="font-[family-name:var(--font-sora)] text-xl font-bold">
-                AptiMaster
+                AptiRush
               </span>
             </Link>
             <p className="text-sm text-muted-foreground mb-6 max-w-xs">
@@ -137,7 +137,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="pt-8 border-t border-border/30 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} AptiMaster. All rights reserved.
+            &copy; {new Date().getFullYear()} AptiRush. All rights reserved.
           </p>
           <p className="text-sm text-muted-foreground">
             Made with passion for exam aspirants across India.

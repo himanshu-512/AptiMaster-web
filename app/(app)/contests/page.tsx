@@ -100,7 +100,7 @@ export default function ContestsPage() {
                     {contest.status || type.toUpperCase()}
                   </Badge>
                 </div>
-                <CardTitle className="text-lg">{contest.title || "AptiMaster Contest"}</CardTitle>
+                <CardTitle className="text-lg">{contest.title || "AptiRush Contest"}</CardTitle>
                 <p className="mt-1 text-sm text-muted-foreground">{contest.description || "Timed aptitude challenge"}</p>
               </div>
               <Badge variant="outline" className="bg-primary/20 text-primary border-primary/30">{totalQuestions} Qs</Badge>

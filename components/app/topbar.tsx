@@ -23,7 +23,7 @@ export function Topbar() {
     userApi.profile().then(setProfile).catch(() => setProfile(null))
   }, [])
 
-  const name = profile?.name || auth.user?.name || 'AptiMaster User'
+  const name = profile?.name || auth.user?.name || 'AptiRush User'
   const initials = name.split(' ').map((part) => part[0]).join('').slice(0, 2).toUpperCase() || 'AM'
 
   return (

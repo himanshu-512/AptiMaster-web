@@ -58,7 +58,7 @@ export function SeoPrepSection() {
             Practice aptitude questions for placements, mock tests, and competitive exams
           </h2>
           <p className="mt-4 text-lg leading-8 text-muted-foreground">
-            AptiMaster helps students prepare for quantitative aptitude, logical reasoning, verbal ability, and placement test rounds with structured practice and progress analytics.
+            AptiRush helps students prepare for quantitative aptitude, logical reasoning, verbal ability, and placement test rounds with structured practice and progress analytics.
           </p>
         </motion.div>
 

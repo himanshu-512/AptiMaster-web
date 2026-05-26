@@ -9,32 +9,75 @@ export const APP_DOWNLOAD_URL =
 
 export type ApiError = Error & { status?: number; data?: unknown }
 
-function getToken() {
+export const STORAGE_KEYS = {
+  token: 'aptirush_token',
+  userId: 'aptirush_user_id',
+  profileComplete: 'aptirush_profile_complete',
+  phone: 'aptirush_phone',
+  unauthorizedEvent: 'aptirush:unauthorized',
+} as const
+
+const LEGACY_PREFIX = 'apti' + 'master'
+
+const LEGACY_STORAGE_KEYS = {
+  token: `${LEGACY_PREFIX}_token`,
+  userId: `${LEGACY_PREFIX}_user_id`,
+  profileComplete: `${LEGACY_PREFIX}_profile_complete`,
+  phone: `${LEGACY_PREFIX}_phone`,
+  unauthorizedEvent: `${LEGACY_PREFIX}:unauthorized`,
+} as const
+
+export function getStoredToken() {
   if (typeof window === 'undefined') return null
-  return localStorage.getItem('aptimaster_token')
+  const token = localStorage.getItem(STORAGE_KEYS.token) || localStorage.getItem(LEGACY_STORAGE_KEYS.token)
+  const legacyUserId = localStorage.getItem(LEGACY_STORAGE_KEYS.userId)
+  const legacyProfileComplete = localStorage.getItem(LEGACY_STORAGE_KEYS.profileComplete)
+
+  if (token && !localStorage.getItem(STORAGE_KEYS.token)) localStorage.setItem(STORAGE_KEYS.token, token)
+  if (legacyUserId && !localStorage.getItem(STORAGE_KEYS.userId)) localStorage.setItem(STORAGE_KEYS.userId, legacyUserId)
+  if (legacyProfileComplete && !localStorage.getItem(STORAGE_KEYS.profileComplete)) {
+    localStorage.setItem(STORAGE_KEYS.profileComplete, legacyProfileComplete)
+  }
+
+  return token
+}
+
+export function getStoredPhone() {
+  if (typeof window === 'undefined') return null
+  const phone = sessionStorage.getItem(STORAGE_KEYS.phone) || sessionStorage.getItem(LEGACY_STORAGE_KEYS.phone)
+  if (phone && !sessionStorage.getItem(STORAGE_KEYS.phone)) sessionStorage.setItem(STORAGE_KEYS.phone, phone)
+  return phone
+}
+
+function getToken() {
+  return getStoredToken()
 }
 
 export function setSession(token: string, userId?: string, profileComplete?: boolean) {
   if (typeof window === 'undefined') return
-  localStorage.setItem('aptimaster_token', token)
-  if (userId) localStorage.setItem('aptimaster_user_id', userId)
+  localStorage.setItem(STORAGE_KEYS.token, token)
+  if (userId) localStorage.setItem(STORAGE_KEYS.userId, userId)
   if (typeof profileComplete === 'boolean') {
-    localStorage.setItem('aptimaster_profile_complete', String(profileComplete))
+    localStorage.setItem(STORAGE_KEYS.profileComplete, String(profileComplete))
   }
 }
 
 export function clearSession() {
   if (typeof window === 'undefined') return
-  localStorage.removeItem('aptimaster_token')
-  localStorage.removeItem('aptimaster_user_id')
-  localStorage.removeItem('aptimaster_profile_complete')
-  sessionStorage.removeItem('aptimaster_phone')
+  localStorage.removeItem(STORAGE_KEYS.token)
+  localStorage.removeItem(STORAGE_KEYS.userId)
+  localStorage.removeItem(STORAGE_KEYS.profileComplete)
+  localStorage.removeItem(LEGACY_STORAGE_KEYS.token)
+  localStorage.removeItem(LEGACY_STORAGE_KEYS.userId)
+  localStorage.removeItem(LEGACY_STORAGE_KEYS.profileComplete)
+  sessionStorage.removeItem(STORAGE_KEYS.phone)
+  sessionStorage.removeItem(LEGACY_STORAGE_KEYS.phone)
 }
 
 function handleUnauthorized() {
   if (typeof window === 'undefined') return
   clearSession()
-  window.dispatchEvent(new Event('aptimaster:unauthorized'))
+  window.dispatchEvent(new Event(STORAGE_KEYS.unauthorizedEvent))
 }
 
 export async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {

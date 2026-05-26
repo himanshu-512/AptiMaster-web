@@ -98,7 +98,7 @@ export default function LeaderboardPage() {
                           {isFirst ? <Crown className="h-4 w-4 text-white" /> : <Medal className="h-4 w-4 text-white" />}
                         </div>
                       </div>
-                      <p className={`${isFirst ? "text-lg" : "text-sm"} font-semibold text-foreground`}>{user.name || "AptiMaster User"}</p>
+                      <p className={`${isFirst ? "text-lg" : "text-sm"} font-semibold text-foreground`}>{user.name || "AptiRush User"}</p>
                       <p className="font-bold text-primary">{(user.points || 0).toLocaleString()}</p>
                       <Card className={`${height} mt-3 w-28 bg-gradient-to-t from-primary/10 to-primary/5 border`}>
                         <CardContent className="flex h-full flex-col items-center justify-center p-3">
@@ -129,7 +129,7 @@ export default function LeaderboardPage() {
                             <AvatarFallback className="bg-primary/20 text-primary text-sm">{(user.name || "AM").split(" ").map((n) => n[0]).join("").slice(0, 2)}</AvatarFallback>
                           </Avatar>
                           <div>
-                            <p className="font-medium text-foreground">{user.name || "AptiMaster User"}</p>
+                            <p className="font-medium text-foreground">{user.name || "AptiRush User"}</p>
                             <div className="flex items-center gap-3 text-xs text-muted-foreground">
                               <span className="flex items-center gap-1"><Target className="h-3 w-3 text-green-500" />Points</span>
                             </div>

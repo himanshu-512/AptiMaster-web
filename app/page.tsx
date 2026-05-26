@@ -21,14 +21,14 @@ const landingJsonLd = {
     {
       '@type': 'Organization',
       '@id': `${SITE_URL}/#organization`,
-      name: 'AptiMaster',
+      name: 'AptiRush',
       url: SITE_URL,
       logo: `${SITE_URL}/icon.svg`,
     },
     {
       '@type': 'WebSite',
       '@id': `${SITE_URL}/#website`,
-      name: 'AptiMaster',
+      name: 'AptiRush',
       url: SITE_URL,
       publisher: { '@id': `${SITE_URL}/#organization` },
       inLanguage: 'en-IN',
@@ -36,7 +36,7 @@ const landingJsonLd = {
     {
       '@type': 'SoftwareApplication',
       '@id': `${SITE_URL}/#app`,
-      name: 'AptiMaster',
+      name: 'AptiRush',
       applicationCategory: 'EducationalApplication',
       operatingSystem: 'Android, Web',
       url: SITE_URL,

@@ -8,7 +8,7 @@ import { Zap, Phone, ArrowRight, Shield, ChevronLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { authApi, getApiMessage } from '@/lib/api'
+import { authApi, getApiMessage, STORAGE_KEYS } from '@/lib/api'
 import { useAuth } from '@/lib/auth'
 import { toast } from 'sonner'
 
@@ -49,7 +49,7 @@ export default function LoginPage() {
       const fullPhone = `+91${phoneNumber}`
       await authApi.sendOtp(fullPhone)
       setIsLoading(false)
-      sessionStorage.setItem('aptimaster_phone', fullPhone)
+      sessionStorage.setItem(STORAGE_KEYS.phone, fullPhone)
       toast.success('OTP sent successfully')
       router.push('/auth/verify')
     } catch (err) {
@@ -84,7 +84,7 @@ export default function LoginPage() {
               <Zap className="w-6 h-6 text-white" />
             </div>
             <span className="font-[family-name:var(--font-sora)] text-2xl font-bold">
-              AptiMaster
+              AptiRush
             </span>
           </Link>
 
@@ -126,7 +126,7 @@ export default function LoginPage() {
               <Zap className="w-5 h-5 text-white" />
             </div>
             <span className="font-[family-name:var(--font-sora)] text-xl font-bold">
-              AptiMaster
+              AptiRush
             </span>
           </Link>
 

@@ -87,7 +87,7 @@ export function Sidebar() {
                 animate={{ opacity: 1 }}
                 className="font-[family-name:var(--font-sora)] text-lg font-bold"
               >
-                AptiMaster
+                AptiRush
               </motion.span>
             )}
           </Link>

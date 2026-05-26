@@ -12,10 +12,10 @@ const siteUrl = new URL(SITE_URL)
 
 export const metadata: Metadata = {
   metadataBase: siteUrl,
-  applicationName: 'AptiMaster',
+  applicationName: 'AptiRush',
   title: {
-    default: 'AptiMaster - AI Aptitude Practice, Mock Tests and Analytics',
-    template: '%s | AptiMaster',
+    default: 'AptiRush - AI Aptitude Practice, Mock Tests and Analytics',
+    template: '%s | AptiRush',
   },
   description: 'Prepare for aptitude exams with AI-powered practice questions, smart quizzes, analytics, contests, leaderboards, and a downloadable Android app.',
   keywords: [
@@ -28,11 +28,11 @@ export const metadata: Metadata = {
     'quantitative aptitude',
     'verbal ability',
     'AI learning app',
-    'AptiMaster',
+    'AptiRush',
   ],
-  authors: [{ name: 'AptiMaster' }],
-  creator: 'AptiMaster',
-  publisher: 'AptiMaster',
+  authors: [{ name: 'AptiRush' }],
+  creator: 'AptiRush',
+  publisher: 'AptiRush',
   category: 'education',
   alternates: {
     canonical: '/',
@@ -52,21 +52,21 @@ export const metadata: Metadata = {
     type: 'website',
     url: '/',
     locale: 'en_IN',
-    title: 'AptiMaster - AI Aptitude Practice and Mock Tests',
+    title: 'AptiRush - AI Aptitude Practice and Mock Tests',
     description: 'Practice quantitative aptitude, reasoning, verbal ability, contests, and personalized analytics in one preparation platform.',
-    siteName: 'AptiMaster',
+    siteName: 'AptiRush',
     images: [
       {
         url: '/placeholder-logo.png',
         width: 512,
         height: 512,
-        alt: 'AptiMaster aptitude preparation platform',
+        alt: 'AptiRush aptitude preparation platform',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AptiMaster - AI Aptitude Practice and Mock Tests',
+    title: 'AptiRush - AI Aptitude Practice and Mock Tests',
     description: 'Practice smarter with AI-powered quizzes, progress analytics, contests, and a mobile app.',
     images: ['/placeholder-logo.png'],
   },
@@ -81,7 +81,7 @@ export const metadata: Metadata = {
   manifest: '/manifest.webmanifest',
   appleWebApp: {
     capable: true,
-    title: 'AptiMaster',
+    title: 'AptiRush',
     statusBarStyle: 'default',
   },
   formatDetection: {

@@ -1,8 +1,8 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Sign In - AptiMaster',
-  description: 'Sign in to your AptiMaster account to continue your aptitude preparation journey.',
+  title: 'Sign In - AptiRush',
+  description: 'Sign in to your AptiRush account to continue your aptitude preparation journey.',
 }
 
 export default function AuthLayout({

@@ -27,7 +27,7 @@ export function DownloadClient() {
               <Smartphone className="h-6 w-6" />
             </div>
             <div>
-              <p className="text-sm font-medium text-primary">AptiMaster Android</p>
+              <p className="text-sm font-medium text-primary">AptiRush Android</p>
               <h1 className="font-[family-name:var(--font-sora)] text-2xl font-bold">Download starting...</h1>
             </div>
           </div>

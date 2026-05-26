@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { authApi, clearSession, setSession, type AuthMe } from '@/lib/api'
+import { authApi, clearSession, getStoredToken, setSession, STORAGE_KEYS, type AuthMe } from '@/lib/api'
 
 type AuthContextValue = {
   user: AuthMe | null
@@ -22,7 +22,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   const refresh = async () => {
-    const storedToken = localStorage.getItem('aptimaster_token')
+    const storedToken = getStoredToken()
     setTokenValue(storedToken)
     if (!storedToken) {
       setUser(null)
@@ -33,7 +33,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const me = await authApi.me()
       setUser(me)
-      localStorage.setItem('aptimaster_profile_complete', String(Boolean(me.profileComplete)))
+      localStorage.setItem(STORAGE_KEYS.profileComplete, String(Boolean(me.profileComplete)))
     } catch {
       clearSession()
       setTokenValue(null)
@@ -55,8 +55,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       router.replace('/')
     }
 
-    window.addEventListener('aptimaster:unauthorized', handleUnauthorized)
-    return () => window.removeEventListener('aptimaster:unauthorized', handleUnauthorized)
+    window.addEventListener(STORAGE_KEYS.unauthorizedEvent, handleUnauthorized)
+    return () => window.removeEventListener(STORAGE_KEYS.unauthorizedEvent, handleUnauthorized)
   }, [router])
 
   const login = async (newToken: string, userId: string, profileComplete: boolean) => {

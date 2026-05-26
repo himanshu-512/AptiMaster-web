@@ -40,7 +40,7 @@ export function Header() {
               <Zap className="w-5 h-5 text-white" />
             </div>
             <span className="font-[family-name:var(--font-sora)] text-xl font-bold">
-              AptiMaster
+              AptiRush
             </span>
           </Link>
 
