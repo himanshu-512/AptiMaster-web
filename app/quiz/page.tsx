@@ -3,20 +3,154 @@
 import { Suspense, useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Clock, Bookmark, BookmarkCheck, ChevronLeft, ChevronRight, Flag, Grid3X3, X, CheckCircle2, XCircle, AlertCircle } from 'lucide-react'
+import { Clock, Bookmark, BookmarkCheck, ChevronLeft, ChevronRight, Flag, Grid3X3, X, CheckCircle2, XCircle, AlertCircle, Sparkles, Lightbulb, ListChecks, Target, Copy, Save, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
-import { attemptApi, getApiMessage, questionApi, type Question, type ResultResponse } from '@/lib/api'
+import { aiApi, attemptApi, getApiMessage, questionApi, type AiExplanation, type Question, type ResultResponse } from '@/lib/api'
 import { toast } from 'sonner'
 
 type QuestionStatus = 'unanswered' | 'answered' | 'review'
+const SAVED_AI_SOLUTIONS_KEY = 'aptirush_saved_ai_solutions'
 
 interface QuestionState {
   selected: number | null
   status: QuestionStatus
   bookmarked: boolean
   timeSpent: number
+}
+
+function parseAiExplanation(text: string) {
+  const cleaned = text.replace(/\r/g, '').trim()
+  const lines = cleaned.split('\n').map((line) => line.trim()).filter(Boolean)
+  const sections: Array<{ title: string; body: string[] }> = []
+  let current: { title: string; body: string[] } | null = null
+
+  for (const line of lines) {
+    const match = line.match(/^(?:#{1,3}\s*)?(?:\d+[.)]\s*)?([^:]{3,60}):\s*(.*)$/)
+    const looksLikeHeading = match && /answer|solution|selected|wrong|right|trick|step|explanation/i.test(match[1])
+
+    if (looksLikeHeading) {
+      if (current) sections.push(current)
+      current = { title: match[1].replace(/\*/g, '').trim(), body: match[2] ? [match[2].trim()] : [] }
+    } else if (current) {
+      current.body.push(line)
+    } else {
+      current = { title: 'AI Summary', body: [line] }
+    }
+  }
+
+  if (current) sections.push(current)
+  return sections.length ? sections : [{ title: 'AI Summary', body: [cleaned] }]
+}
+
+function AiExplanationSkeleton() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="mt-5 rounded-2xl border border-border/70 bg-card p-4 shadow-sm sm:p-5"
+    >
+      <div className="space-y-4">
+        <div className="rounded-xl border border-primary/10 bg-primary/5 p-4">
+          <div className="mb-3 h-7 w-40 animate-pulse rounded-lg bg-muted" />
+          <div className="space-y-2">
+            <div className="h-3 w-full animate-pulse rounded bg-muted" />
+            <div className="h-3 w-5/6 animate-pulse rounded bg-muted" />
+          </div>
+        </div>
+        {[0, 1].map((item) => (
+          <div key={item} className="rounded-xl border border-border/60 bg-background/60 p-4">
+            <div className="mb-3 flex items-center gap-2">
+              <div className="h-8 w-8 animate-pulse rounded-lg bg-muted" />
+              <div className="h-4 w-36 animate-pulse rounded bg-muted" />
+            </div>
+            <div className="space-y-2">
+              <div className="h-3 w-full animate-pulse rounded bg-muted" />
+              <div className="h-3 w-4/5 animate-pulse rounded bg-muted" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </motion.div>
+  )
+}
+
+function AiExplanationCard({
+  explanation,
+  isSaved,
+  onCopy,
+  onSave,
+}: {
+  explanation: AiExplanation
+  isSaved: boolean
+  onCopy: (explanation: AiExplanation) => void
+  onSave: (explanation: AiExplanation) => void
+}) {
+  const sections = parseAiExplanation(explanation.explanation)
+  const summary = sections[0]
+  const rest = sections.slice(1)
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25 }}
+      className="mt-5 rounded-2xl border border-border/70 bg-card p-4 shadow-sm sm:p-5"
+    >
+      <div className="space-y-4">
+        {summary && (
+          <div className="rounded-xl border border-success/20 bg-success/10 p-4">
+            <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-success">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-success text-success-foreground">
+                <Target className="h-4 w-4" />
+              </span>
+              {summary.title}
+            </div>
+            <div className="space-y-2 text-[15px] leading-relaxed text-foreground">
+              {summary.body.map((line, index) => (
+                <p key={index}>{line}</p>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {rest.map((section, sectionIndex) => {
+          const isTrick = /trick|tip/i.test(section.title)
+          const Icon = isTrick ? Lightbulb : ListChecks
+
+          return (
+            <div key={`${section.title}-${sectionIndex}`} className="rounded-xl border border-border/60 bg-background/60 p-4">
+              <div className="mb-3 flex items-center gap-2">
+                <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${isTrick ? 'bg-warning/15 text-warning' : 'bg-primary/10 text-primary'}`}>
+                  <Icon className="h-4 w-4" />
+                </span>
+                <h5 className="font-[family-name:var(--font-sora)] text-sm font-semibold">{section.title}</h5>
+              </div>
+              <div className="space-y-2 text-[15px] leading-relaxed text-muted-foreground">
+                {section.body.map((line, index) => (
+                  <div key={index} className="flex gap-2">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/60" />
+                    <p className="min-w-0 break-words">{line.replace(/^[-*]\s*/, '')}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )
+        })}
+      </div>
+      <div className="mt-4 flex flex-col gap-2 border-t border-border/60 pt-4 sm:flex-row sm:justify-end">
+        <Button type="button" variant="outline" size="sm" onClick={() => onCopy(explanation)} className="rounded-xl">
+          <Copy className="mr-2 h-4 w-4" />
+          Copy
+        </Button>
+        <Button type="button" variant={isSaved ? 'secondary' : 'outline'} size="sm" onClick={() => onSave(explanation)} className="rounded-xl">
+          {isSaved ? <Check className="mr-2 h-4 w-4" /> : <Save className="mr-2 h-4 w-4" />}
+          {isSaved ? 'Saved' : 'Save'}
+        </Button>
+      </div>
+    </motion.div>
+  )
 }
 
 export default function QuizPage() {
@@ -42,6 +176,9 @@ function QuizContent() {
   const [loading, setLoading] = useState(true)
   const [result, setResult] = useState<ResultResponse | null>(null)
   const [submitting, setSubmitting] = useState(false)
+  const [aiExplanations, setAiExplanations] = useState<Record<string, AiExplanation>>({})
+  const [aiLoadingQuestionId, setAiLoadingQuestionId] = useState<string | null>(null)
+  const [savedAiSolutions, setSavedAiSolutions] = useState<Record<string, AiExplanation>>({})
 
   const isTimed = searchParams.get('timed') !== 'false'
   const count = Math.max(1, Math.min(50, Number(searchParams.get('count') || 10)))
@@ -102,6 +239,15 @@ function QuizContent() {
     return () => clearInterval(timer)
   }, [isTimed, isSubmitted, timeLeft, loading])
 
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(SAVED_AI_SOLUTIONS_KEY)
+      if (raw) setSavedAiSolutions(JSON.parse(raw))
+    } catch {
+      setSavedAiSolutions({})
+    }
+  }, [])
+
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
     const secs = seconds % 60
@@ -161,6 +307,71 @@ function QuizContent() {
   const startReview = () => {
     setCurrentIndex(0)
     setShowReview(true)
+  }
+
+  const handleAiExplanation = async () => {
+    if (!currentQuestion?.id || aiLoadingQuestionId) return
+
+    const cached = aiExplanations[currentQuestion.id]
+    if (cached) return
+
+    try {
+      setAiLoadingQuestionId(currentQuestion.id)
+      const response = await aiApi.explainQuestion(currentQuestion.id, currentState.selected)
+      setAiExplanations((prev) => ({ ...prev, [currentQuestion.id]: response }))
+    } catch (err) {
+      if (currentQuestion.explanation) {
+        const fallback = buildFallbackExplanation(currentQuestion, currentState.selected)
+        setAiExplanations((prev) => ({ ...prev, [currentQuestion.id]: fallback }))
+        toast.warning('AI is unavailable, showing the official explanation.')
+      } else {
+        toast.error(getApiMessage(err, 'AI solution is not available right now.'))
+      }
+    } finally {
+      setAiLoadingQuestionId(null)
+    }
+  }
+
+  const buildFallbackExplanation = (question: Question, selectedAnswer: number | null): AiExplanation => {
+    const correct = formatOption(question, question.correctAnswer)
+    const selected = selectedAnswer === null || selectedAnswer < 0 ? 'Not attempted' : formatOption(question, selectedAnswer)
+    const answerStatus = selectedAnswer === question.correctAnswer
+      ? 'Your selected answer is correct.'
+      : `Your selected answer was ${selected}, but the correct answer is ${correct}.`
+
+    return {
+      questionId: question.id,
+      model: 'official-explanation',
+      explanation: [
+        `Short Answer: ${correct}`,
+        `Step-by-step Solution: ${question.explanation}`,
+        `Why Your Answer: ${answerStatus}`,
+        'Quick Trick: Re-check the key condition in the question and compare it directly with the options.',
+      ].join('\n'),
+    }
+  }
+
+  const formatOption = (question: Question, index: number) => {
+    if (index < 0 || index >= question.options.length) return 'Unknown'
+    return `${String.fromCharCode(65 + index)}. ${question.options[index]}`
+  }
+
+  const handleCopyAiExplanation = async (explanation: AiExplanation) => {
+    try {
+      await navigator.clipboard.writeText(explanation.explanation)
+      toast.success('AI solution copied')
+    } catch {
+      toast.error('Copy failed. Please try again.')
+    }
+  }
+
+  const handleSaveAiExplanation = (explanation: AiExplanation) => {
+    setSavedAiSolutions((prev) => {
+      const next = { ...prev, [explanation.questionId]: explanation }
+      localStorage.setItem(SAVED_AI_SOLUTIONS_KEY, JSON.stringify(next))
+      return next
+    })
+    toast.success('AI solution saved on this device')
   }
 
   const answeredCount = questionStates.filter((s) => s.selected !== null).length
@@ -289,6 +500,40 @@ function QuizContent() {
             <div className="p-4 rounded-xl bg-muted/50">
               <h4 className="font-semibold mb-2">Explanation</h4>
               <p className="text-sm text-muted-foreground">{currentQuestion.explanation || 'No explanation available.'}</p>
+            </div>
+
+            <div className="mt-4 rounded-2xl border border-primary/20 bg-primary/5 p-4">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <Sparkles className="w-5 h-5" />
+                  </div>
+                  <div>
+                  <h4 className="font-semibold">Solution by AI</h4>
+                  <p className="text-xs text-muted-foreground">Clear reasoning, answer check, and a quick solving idea.</p>
+                  </div>
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleAiExplanation}
+                  disabled={aiLoadingQuestionId === currentQuestion.id}
+                  className="rounded-xl"
+                >
+                  {aiLoadingQuestionId === currentQuestion.id ? 'Generating...' : aiExplanations[currentQuestion.id] ? 'Generated' : 'Show AI Solution'}
+                </Button>
+              </div>
+              {aiLoadingQuestionId === currentQuestion.id && !aiExplanations[currentQuestion.id] && (
+                <AiExplanationSkeleton />
+              )}
+              {aiExplanations[currentQuestion.id] && (
+                <AiExplanationCard
+                  explanation={aiExplanations[currentQuestion.id]}
+                  isSaved={Boolean(savedAiSolutions[currentQuestion.id])}
+                  onCopy={handleCopyAiExplanation}
+                  onSave={handleSaveAiExplanation}
+                />
+              )}
             </div>
           </motion.div>
 

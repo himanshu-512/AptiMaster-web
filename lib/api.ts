@@ -1,5 +1,5 @@
 export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || 'https://aptimaster-1.onrender.com/api'
+  process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api'
 
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || 'https://aptimaster-web.vercel.app'
@@ -181,6 +181,12 @@ export type AiSuggestion = {
   reason?: string
 }
 
+export type AiExplanation = {
+  questionId: string
+  explanation: string
+  model: string
+}
+
 export type Question = {
   id: string
   topic?: string
@@ -262,6 +268,14 @@ export const analyticsApi = {
   weekly: () => apiFetch<AnalyticsResponse>('/analytics/weekly'),
   monthly: () => apiFetch<AnalyticsResponse>('/analytics/30'),
   suggestion: () => apiFetch<AiSuggestion>('/ai/suggest-topic'),
+}
+
+export const aiApi = {
+  explainQuestion: (questionId: string, selectedAnswer: number | null) =>
+    apiFetch<AiExplanation>('/ai/explain-question', {
+      method: 'POST',
+      body: JSON.stringify({ questionId, selectedAnswer: selectedAnswer ?? -1 }),
+    }),
 }
 
 export const leaderboardApi = {
